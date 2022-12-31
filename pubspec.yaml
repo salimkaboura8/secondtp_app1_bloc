@@ -1,4 +1,4 @@
-name: first_tp
+name: tp2_app1
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -54,8 +54,6 @@ dev_dependencies:
 flutter:
 
   assets:
-    - assets/images/profile.jpg
-    - assets/images/athlete.jpg
     - assets/images/france.jpg
 
   # The following line ensures that the Material Icons font is
