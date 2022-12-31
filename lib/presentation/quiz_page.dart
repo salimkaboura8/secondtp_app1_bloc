@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/quiz_data.dart';
+import '../business_logic/quiz_bloc.dart';
+import '../main.dart';
 
 class QuizzPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final quizData = Provider.of<QuizData>(context);
+    final quizBloc = BlocProvider.of<QuizBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -14,7 +15,7 @@ class QuizzPage extends StatelessWidget {
         centerTitle: false,
       ),
       backgroundColor: Colors.blueGrey,
-      body: quizData.questionIndex < quizData.questions.length - 1
+      body: quizBloc.state.questionIndex <= quizBloc.state.questions.length - 1
           ? Padding(
               padding: const EdgeInsets.all(40),
               child: Column(
@@ -23,7 +24,7 @@ class QuizzPage extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.all(40),
                     child: Text(
-                      quizData.getQuestion(),
+                      quizBloc.state.getQuestion(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
@@ -36,16 +37,14 @@ class QuizzPage extends StatelessWidget {
                       width: 160,
                       child: ElevatedButton(
                           onPressed: () {
-                            Provider.of<QuizData>(context, listen: false)
-                                .nextQuestion(true);
+                            quizBloc.add(NextQuestion(true));
                           },
                           child: Text('Vrai'))),
                   SizedBox(
                       width: 160,
                       child: ElevatedButton(
                           onPressed: () {
-                            Provider.of<QuizData>(context, listen: false)
-                                .nextQuestion(false);
+                            quizBloc.add(NextQuestion(false));
                           },
                           child: Text('Faux')))
                 ],
@@ -60,7 +59,7 @@ class QuizzPage extends StatelessWidget {
                     style: TextStyle(fontSize: 40.0, color: Colors.white),
                   ),
                   Text(
-                    'Votre score est ${quizData.getScore()}/5',
+                    'Votre score est ${quizBloc.state.score}/5',
                     style: TextStyle(fontSize: 30.0, color: Colors.white),
                   )
                 ],
